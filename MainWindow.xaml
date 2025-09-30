@@ -1,0 +1,29 @@
+<Window
+    x:Class="EscapeRoom.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    Title="Escape Room — Menu">
+
+    <Grid Padding="24" RowDefinitions="Auto,*,Auto">
+        <!-- Header -->
+        <StackPanel Spacing="6">
+            <TextBlock Text="ESCAPE ROOM" FontSize="28" FontWeight="SemiBold"/>
+        </StackPanel>
+
+        <!-- (Optional) Ảnh cover -->
+        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="16">
+            <!-- Ảnh cover: đặt file vào Assets/cover.png -->
+            <Button x:Name="PlayButton"
+                    Content="Play"
+                    Click="PlayButton_Click"
+                    Width="220" Height="48"/>
+            <Button x:Name="QuitButton"
+                    Content="Quit"
+                    Click="QuitButton_Click"
+                    Width="220" Height="40"/>
+        </StackPanel>
+
+        <!-- Footer -->
+        <TextBlock Grid.Row="2" Text="Play để bắt đầu | Quit để thoát" Opacity="0.7"/>
+    </Grid>
+</Window>

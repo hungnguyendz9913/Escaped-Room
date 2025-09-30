@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "EscapeRoom (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "EscapeRoom (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}
