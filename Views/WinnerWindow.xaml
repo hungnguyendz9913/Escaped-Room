@@ -6,9 +6,187 @@
     xmlns:local="using:EscapeRoom.Views"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources>
+        <!-- Acrylic Background -->
+        <AcrylicBrush x:Key="CustomAcrylicBrush"
+                      TintColor="{ThemeResource SystemChromeMediumColor}"
+                      TintOpacity="0.8"
+                      FallbackColor="{ThemeResource SystemChromeMediumColor}"/>
+        
+        <!-- Card Background -->
+        <AcrylicBrush x:Key="CardAcrylicBrush"
+                      TintColor="{ThemeResource LayerFillColorDefault}"
+                      TintOpacity="0.9"
+                      FallbackColor="{ThemeResource LayerFillColorDefault}"/>
+    </Page.Resources>
 
     <Grid>
+        <!-- Background with Acrylic -->
+        <Grid.Background>
+            <AcrylicBrush TintColor="#0F1419" 
+                         TintOpacity="0.95"
+                         FallbackColor="#0F1419"/>
+        </Grid.Background>
 
+        <Border 
+                Width="540"
+                Height="700"
+                CornerRadius="{StaticResource OverlayCornerRadius}"
+                Padding="48,40,48,48"
+                Background="{ThemeResource CardBackgroundFillColorDefaultBrush}"
+                BorderBrush="{ThemeResource CardStrokeColorDefaultBrush}"
+                BorderThickness="1"
+                Translation="0,0,32">
+
+            <Border.Shadow>
+                <ThemeShadow />
+            </Border.Shadow>
+
+            <StackPanel Spacing="20">
+                <!-- Trophy Icon with AnimatedIcon -->
+                <Viewbox Height="80" Width="80" HorizontalAlignment="Center">
+                    <FontIcon Glyph="&#xE799;" Foreground="{ThemeResource SystemAccentColor}"/>
+                </Viewbox>
+
+                <!-- Congratulations Text -->
+                <TextBlock 
+                        Text="🎉 CHÚC MỪNG! 🎉"
+                        Style="{StaticResource TitleTextBlockStyle}"
+                        Foreground="{ThemeResource SystemAccentColor}"
+                        HorizontalAlignment="Center"
+                        TextAlignment="Center"/>
+
+                <!-- Success Message -->
+                <StackPanel Spacing="8">
+                    <TextBlock 
+                            Text="Bạn đã hoàn thành thử thách!"
+                            Style="{StaticResource SubtitleTextBlockStyle}"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            HorizontalAlignment="Center"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap"/>
+
+                    <InfoBar
+                            IsOpen="True"
+                            Severity="Success"
+                            Message="Trả lời đúng 3/3 câu hỏi"
+                            IsClosable="False"
+                            HorizontalAlignment="Center"/>
+                </StackPanel>
+
+                <!-- Email Section -->
+                <StackPanel Spacing="14">
+                    <TextBlock 
+                        Text="Email liên hệ"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        HorizontalAlignment="Center"/>
+
+                    <!-- Email Display with Copy Button -->
+                    <Grid 
+                        Background="{ThemeResource ControlFillColorDefaultBrush}"
+                        CornerRadius="{StaticResource ControlCornerRadius}"
+                        Padding="16,12"
+                        BorderBrush="{ThemeResource ControlStrokeColorDefaultBrush}"
+                        BorderThickness="1">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock 
+                            x:Name="EmailTextBlock"
+                            Text="contact@escaperoom.com"
+                            Style="{StaticResource BodyTextBlockStyle}"
+                            Foreground="{ThemeResource TextFillColorPrimaryBrush}"
+                            VerticalAlignment="Center"
+                            Margin="0,0,12,0"
+                            TextWrapping="Wrap"/>
+
+                        <Button 
+                            x:Name="CopyEmailButton"
+                            Grid.Column="1"
+                            Click="CopyEmailButton_Click"
+                            Style="{StaticResource AccentButtonStyle}"
+                            ToolTipService.ToolTip="Copy email">
+                            <StackPanel Orientation="Horizontal" Spacing="8">
+                                <FontIcon Glyph="&#xE8C8;" FontSize="16"/>
+                                <TextBlock Text="Copy"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+
+                    <!-- Success Message for Copy -->
+                    <InfoBar
+                            x:Name="CopySuccessInfoBar"
+                            Severity="Success"
+                            Message="Đã copy email vào clipboard!"
+                            IsOpen="False"
+                            IsClosable="True"
+                            MaxHeight="60"/>
+                </StackPanel>
+
+                <!-- Send Email Section -->
+                <StackPanel Spacing="14">
+                    <TextBlock 
+                        Text="Gửi email ngay"
+                        Style="{StaticResource BodyStrongTextBlockStyle}"
+                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"
+                        HorizontalAlignment="Center"/>
+
+                    <Grid ColumnSpacing="12">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Gmail Button -->
+                        <Button 
+                            x:Name="GmailButton"
+                            Grid.Column="0"
+                            Click="GmailButton_Click"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource AccentButtonStyle}">
+                            <Button.Background>
+                                <SolidColorBrush Color="#EA4335"/>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE119;" FontSize="16"/>
+                                <TextBlock Text="Gmail" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+
+                        <!-- Outlook Button -->
+                        <Button 
+                            x:Name="OutlookButton"
+                            Grid.Column="1"
+                            Click="OutlookButton_Click"
+                            HorizontalAlignment="Stretch"
+                            Style="{StaticResource AccentButtonStyle}">
+                            <Button.Background>
+                                <SolidColorBrush Color="#0078D4"/>
+                            </Button.Background>
+                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                                <FontIcon Glyph="&#xE715;" FontSize="16"/>
+                                <TextBlock Text="Outlook" FontWeight="SemiBold"/>
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </StackPanel>
+
+                <!-- Close Button -->
+                <Button 
+                        x:Name="CloseButton"
+                        Content="Đóng"
+                        Click="CloseButton_Click"
+                        HorizontalAlignment="Stretch"
+                        Style="{StaticResource AccentButtonStyle}"
+                        Margin="0,12,0,0"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>
