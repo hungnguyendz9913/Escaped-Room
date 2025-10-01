@@ -100,7 +100,7 @@
 
                         <TextBlock 
                             x:Name="EmailTextBlock"
-                            Text="contact@escaperoom.com"
+                            Text="{Binding ContactEmail}"
                             Style="{StaticResource BodyTextBlockStyle}"
                             Foreground="{ThemeResource TextFillColorPrimaryBrush}"
                             VerticalAlignment="Center"
@@ -125,7 +125,7 @@
                             x:Name="CopySuccessInfoBar"
                             Severity="Success"
                             Message="Đã copy email vào clipboard!"
-                            IsOpen="False"
+                            IsOpen="{Binding IsCopySuccessVisible, Mode=TwoWay}"
                             IsClosable="True"
                             MaxHeight="60"/>
                 </StackPanel>

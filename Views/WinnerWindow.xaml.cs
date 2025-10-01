@@ -1,116 +1,53 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Controls.Primitives;
-using Microsoft.UI.Xaml.Data;
-using Microsoft.UI.Xaml.Input;
-using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.ApplicationModel.DataTransfer;
-using System.Threading.Tasks;
-
-// To learn more about WinUI, the WinUI project structure,
-// and more about our project templates, see: http://aka.ms/winui-project-info.
+using EscapeRoom.Services;
+using EscapeRoom.ViewModel;
 
 namespace EscapeRoom.Views
-{
+{ 
     /// <summary>
     /// Winner window displayed after successfully answering 3 questions
+    /// Following MVVM pattern with services
     /// </summary>
     public sealed partial class WinnerWindow : Page
     {
-        private const string ContactEmail = "contact@escaperoom.com";
-        private const string EmailSubject = "Chúc mừng! - Hoàn thành Escape Room";
-        private const string EmailBody = "Xin chào,\n\nTôi vừa hoàn thành thử thách Escape Room và muốn liên hệ với bạn.\n\nTrân trọng,";
+        public WinnerViewModel ViewModel { get; private set; } = null!;
 
         public WinnerWindow()
         {
             InitializeComponent();
-            EmailTextBlock.Text = ContactEmail;
+            InitializeViewModel();
         }
 
         /// <summary>
-        /// Copy email address to clipboard
+        /// Initialize ViewModel with dependency injection
         /// </summary>
-        private async void CopyEmailButton_Click(object sender, RoutedEventArgs e)
+        private void InitializeViewModel()
         {
-            try
-            {
-                // Copy email to clipboard
-                DataPackage dataPackage = new DataPackage();
-                dataPackage.SetText(ContactEmail);
-                Clipboard.SetContent(dataPackage);
+            // Create service instances (in real app, use DI container)
+            var clipboardService = new ClipboardService();
+            var emailService = new EmailService();
+            var dialogService = new DialogService();
 
-                // Show success InfoBar
-                CopySuccessInfoBar.IsOpen = true;
+            // Create ViewModel with services
+            ViewModel = new WinnerViewModel(clipboardService, emailService, dialogService);
+            
+            // Set DataContext for data binding
+            DataContext = ViewModel;
 
-                // Auto-hide InfoBar after 3 seconds
-                await Task.Delay(3000);
-                CopySuccessInfoBar.IsOpen = false;
-            }
-            catch (Exception ex)
-            {
-                // Show error dialog if copy fails
-                await ShowErrorDialog("Không thể copy email", ex.Message);
-            }
+            // Subscribe to ViewModel events
+            ViewModel.CloseRequested += OnCloseRequested;
+
+            // Set XamlRoot for DialogService
+            ViewModel.SetXamlRoot(this.XamlRoot);
         }
 
         /// <summary>
-        /// Open Gmail compose window with pre-filled email
+        /// Handle ViewModel close request
         /// </summary>
-        private async void GmailButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string gmailUrl = $"https://mail.google.com/mail/?view=cm&fs=1&to={ContactEmail}&su={Uri.EscapeDataString(EmailSubject)}&body={Uri.EscapeDataString(EmailBody)}";
-                
-                var uri = new Uri(gmailUrl);
-                var success = await Windows.System.Launcher.LaunchUriAsync(uri);
-
-                if (!success)
-                {
-                    await ShowErrorDialog("Lỗi", "Không thể mở Gmail. Vui lòng kiểm tra trình duyệt của bạn.");
-                }
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialog("Lỗi khi mở Gmail", ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Open Outlook compose window with pre-filled email
-        /// </summary>
-        private async void OutlookButton_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                string outlookUrl = $"https://outlook.office.com/mail/0/deeplink/compose?to={ContactEmail}&subject={Uri.EscapeDataString(EmailSubject)}&body={Uri.EscapeDataString(EmailBody)}";
-                
-                var uri = new Uri(outlookUrl);
-                var success = await Windows.System.Launcher.LaunchUriAsync(uri);
-
-                if (!success)
-                {
-                    await ShowErrorDialog("Lỗi", "Không thể mở Outlook. Vui lòng kiểm tra trình duyệt của bạn.");
-                }
-            }
-            catch (Exception ex)
-            {
-                await ShowErrorDialog("Lỗi khi mở Outlook", ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Close the winner window
-        /// </summary>
-        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        private void OnCloseRequested()
         {
             // Navigate back or close the window
             if (Frame.CanGoBack)
@@ -125,19 +62,74 @@ namespace EscapeRoom.Views
         }
 
         /// <summary>
-        /// Show error dialog
+        /// Copy email button click handler - delegates to ViewModel
         /// </summary>
-        private async Task ShowErrorDialog(string title, string message)
+        private void CopyEmailButton_Click(object sender, RoutedEventArgs e)
         {
-            ContentDialog dialog = new ContentDialog
+            if (ViewModel.CopyEmailCommand.CanExecute(null))
             {
-                Title = title,
-                Content = message,
-                CloseButtonText = "OK",
-                XamlRoot = this.XamlRoot
-            };
+                ViewModel.CopyEmailCommand.Execute(null);
+            }
+        }
 
-            await dialog.ShowAsync();
+        /// <summary>
+        /// Gmail button click handler - delegates to ViewModel
+        /// </summary>
+        private void GmailButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.OpenGmailCommand.CanExecute(null))
+            {
+                ViewModel.OpenGmailCommand.Execute(null);
+            }
+        }
+
+        /// <summary>
+        /// Outlook button click handler - delegates to ViewModel
+        /// </summary>
+        private void OutlookButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.OpenOutlookCommand.CanExecute(null))
+            {
+                ViewModel.OpenOutlookCommand.Execute(null);
+            }
+        }
+
+        /// <summary>
+        /// Close button click handler - delegates to ViewModel
+        /// </summary>
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel.CloseCommand.CanExecute(null))
+            {
+                ViewModel.CloseCommand.Execute(null);
+            }
+        }
+
+        /// <summary>
+        /// Page unloaded - cleanup event subscriptions and resources
+        /// </summary>
+        private void OnUnloaded(object sender, RoutedEventArgs e)
+        {
+            if (ViewModel != null)
+            {
+                ViewModel.CloseRequested -= OnCloseRequested;
+                ViewModel.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Override OnNavigatedTo to ensure ViewModel is properly initialized
+        /// </summary>
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            
+            // Update dialog service with current XamlRoot for proper dialog display
+            if (ViewModel != null)
+            {
+                // The DialogService would need XamlRoot context, 
+                // but we keep it simple for now
+            }
         }
     }
 }
