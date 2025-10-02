@@ -4,9 +4,10 @@ using Microsoft.UI.Xaml.Controls.Primitives;
 using Microsoft.UI.Xaml.Data;
 using Microsoft.UI.Xaml.Input;
 using Microsoft.UI.Xaml.Media;
-using Microsoft.UI.Xaml.Media.Animation
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
+using EscapeRoom;
 
 namespace EscapeRoom.Views
 {
@@ -20,16 +21,13 @@ namespace EscapeRoom.Views
 
         private void toMainWindow_button(object sender, RoutedEventArgs e)
         {
-            WindowPlacementService.Save(this);
-            var next = new MainWindow();
-            WindowPlacementService.Restore(next);
-            next.Activate();
-            this.Close();
+            var frame = new Frame();
+            frame.Navigate(typeof(MainWindow));
         }
 
         private void exit_button(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Exit();
         }  
     }
 }
