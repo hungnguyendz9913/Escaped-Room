@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.System;
 
@@ -86,38 +85,6 @@ namespace EscapeRoom.Services
 
             return url;
         }
-
-        /// <summary>
-        /// Open default email client with pre-filled data
-        /// </summary>
-        /// <param name="to">Recipient email</param>
-        /// <param name="subject">Email subject</param>
-        /// <param name="body">Email body</param>
-        /// <returns>True if successfully opened, false otherwise</returns>
-        public async Task<bool> OpenDefaultEmailClientAsync(string to, string subject = "", string body = "")
-        {
-            try
-            {
-                var url = $"mailto:{Uri.EscapeDataString(to)}";
-                
-                var parameters = new List<string>();
-                if (!string.IsNullOrEmpty(subject))
-                    parameters.Add($"subject={Uri.EscapeDataString(subject)}");
-                
-                if (!string.IsNullOrEmpty(body))
-                    parameters.Add($"body={Uri.EscapeDataString(body)}");
-
-                if (parameters.Count > 0)
-                    url += "?" + string.Join("&", parameters);
-
-                var uri = new Uri(url);
-                return await Launcher.LaunchUriAsync(uri);
-            }
-            catch (Exception)
-            {
-                return false;
-            }
-        }
     }
 
     /// <summary>
@@ -127,6 +94,5 @@ namespace EscapeRoom.Services
     {
         Task<bool> OpenGmailComposeAsync(string to, string subject = "", string body = "");
         Task<bool> OpenOutlookComposeAsync(string to, string subject = "", string body = "");
-        Task<bool> OpenDefaultEmailClientAsync(string to, string subject = "", string body = "");
     }
 }

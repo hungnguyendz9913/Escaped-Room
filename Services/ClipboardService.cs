@@ -32,27 +32,6 @@ namespace EscapeRoom.Services
                 return false;
             }
         }
-
-        /// <summary>
-        /// Get text from clipboard
-        /// </summary>
-        /// <returns>Text from clipboard or empty string if failed</returns>
-        public async Task<string> GetTextFromClipboardAsync()
-        {
-            try
-            {
-                var dataPackageView = Clipboard.GetContent();
-                if (dataPackageView.Contains(StandardDataFormats.Text))
-                {
-                    return await dataPackageView.GetTextAsync();
-                }
-                return string.Empty;
-            }
-            catch (Exception)
-            {
-                return string.Empty;
-            }
-        }
     }
 
     /// <summary>
@@ -61,6 +40,5 @@ namespace EscapeRoom.Services
     public interface IClipboardService
     {
         Task<bool> CopyTextToClipboardAsync(string text);
-        Task<string> GetTextFromClipboardAsync();
     }
 }
