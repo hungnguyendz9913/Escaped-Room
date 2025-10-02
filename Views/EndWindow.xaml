@@ -8,34 +8,82 @@
     mc:Ignorable="d"
     Background="Transparent">
 
-    <StackPanel VerticalAlignment="Center"
+    <Page.Resources>
+        <LinearGradientBrush x:Key="AppGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#08000000" Offset="0"/>
+            <GradientStop Color="#15000000" Offset="1"/>
+        </LinearGradientBrush>
+
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="CornerRadius" Value="16"/>
+            <Setter Property="Padding" Value="28"/>
+            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
+            <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <ThemeShadow/>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="TitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+            <Setter Property="FontSize" Value="28"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="TextAlignment" Value="Center"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+        </Style>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="MinWidth" Value="160"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="16,10"/>
+        </Style>
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <Setter Property="MinWidth" Value="160"/>
+            <Setter Property="Height" Value="44"/>
+            <Setter Property="Padding" Value="16,10"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Padding="24">
+        <Rectangle Fill="{StaticResource AppGradient}"/>
+
+        <Border Style="{StaticResource CardBorderStyle}"
+                MaxWidth="640"
                 HorizontalAlignment="Center"
-                Spacing="20">
+                VerticalAlignment="Center"
+                Translation="0,0,16">
 
-        <TextBlock Text="Oh no! You've encountered a dead end!"
-                   FontSize="24"
-                   FontWeight="Bold"
-                   TextAlignment="Center"
-                   HorizontalAlignment="Center"
-                   Margin="20"/>
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Stretch"
+                        Spacing="20">
 
-        <Image x:Name="DeadEndImage"
-               Width="200"
-               Height="200"
-               HorizontalAlignment="Center"
-               Margin="20"/>
+                <TextBlock Text="❌ GAME OVER ❌"
+                           Style="{StaticResource TitleTextStyle}"/>
 
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Center"
-                    Spacing="12">
-            <Button x:Name="BtnMainMenu"
-                    Content="Exit to Main Menu"
-                    Padding="16,8"
-                    Click="toMainWindow_button"/>
-            <Button x:Name="BtnQuit"
-                    Content="Quit"
-                    Padding="16,8"
-                    Click="exit_button"/>
-        </StackPanel>
-    </StackPanel>
+                <Image x:Name="DeadEndImage"
+                       Width="220"
+                       Height="220"
+                       Stretch="Uniform"
+                       HorizontalAlignment="Center"/>
+
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center"
+                            Spacing="12">
+                    <Button Content="Chơi lại"
+                            Click="PlayAgain_Click"
+                            Style="{StaticResource PrimaryButtonStyle}"/>
+
+                    <Button Content="Thoát"
+                            Click="Exit_Click"
+                            Style="{StaticResource SecondaryButtonStyle}"/>
+                </StackPanel>
+
+                <TextBlock Text="Thử chiến lược khác để không rơi vào ngõ cụt lần sau!"
+                           Opacity="0.7"
+                           TextAlignment="Center"/>
+            </StackPanel>
+        </Border>
+    </Grid>
 </Page>
