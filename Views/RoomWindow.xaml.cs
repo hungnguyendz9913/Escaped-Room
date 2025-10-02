@@ -2,9 +2,12 @@
 using EscapeRoom.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
 using System;
-
+using System.Threading.Tasks;
+using static EscapeRoom.Services.WindowPlacementServiceClass;
+using static EscapeRoom.Services.WindowResizeService;
 namespace EscapeRoom.Views
 {
     public sealed partial class RoomWindow : Window
@@ -17,6 +20,7 @@ namespace EscapeRoom.Views
             WindowResizeService.Resize(this, 1000, 800);
             _index = puzzleIndex;
             LoadPuzzle();
+            FadeIn();
         }
 
         private void LoadPuzzle()
@@ -51,7 +55,11 @@ namespace EscapeRoom.Views
             {
                 if (_index + 1 < PuzzleRepo.Puzzles.Count)
                 {
-                    new RoomWindow(_index + 1).Activate();
+                    await FadeOut();
+                    WindowPlacementService.Save(this);
+                    var next = new RoomWindow(_index + 1);
+                    WindowPlacementService.Restore(next);
+                    next.Activate();
                 }
                 else
                 {
@@ -67,9 +75,47 @@ namespace EscapeRoom.Views
             }
             else
             {
-                new EndWindow().Activate();
+                await FadeOut();
+                WindowPlacementService.Save(this);
+                var next = new EndWindow();
+                WindowPlacementService.Restore(next);
+                next.Activate();
                 this.Close();
             }
+        }
+        private async Task FadeOut()
+        {
+            var fade = new DoubleAnimation
+            {
+                To = 0,
+                Duration = new Duration(TimeSpan.FromMilliseconds(300))
+            };
+
+            var sb = new Storyboard();
+            sb.Children.Add(fade);
+            Storyboard.SetTarget(fade, RootLayout);
+            Storyboard.SetTargetProperty(fade, "Opacity");
+            sb.Begin();
+
+            await Task.Delay(300);
+        }
+
+        private async void FadeIn()
+        {
+            RootLayout.Opacity = 0;
+            await Task.Delay(100);
+
+            var fade = new DoubleAnimation
+            {
+                To = 1,
+                Duration = new Duration(TimeSpan.FromMilliseconds(400))
+            };
+
+            var sb = new Storyboard();
+            sb.Children.Add(fade);
+            Storyboard.SetTarget(fade, RootLayout);
+            Storyboard.SetTargetProperty(fade, "Opacity");
+            sb.Begin();
         }
     }
 }
