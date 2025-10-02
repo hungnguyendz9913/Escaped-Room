@@ -5,8 +5,10 @@
     Width="50" Height="50">
 
     <Grid>
+        <!-- Circle background for the clock -->
         <Ellipse Fill="White" Stroke="Black" StrokeThickness="3"/>
 
+        <!-- Countdown text in the center of the clock -->
         <TextBlock x:Name="CountdownText"
                    Text="10"
                    FontSize="18"

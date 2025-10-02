@@ -13,15 +13,19 @@ namespace EscapeRoom.Views
             DeadEndImage.Source = new BitmapImage(new Uri("ms-appx:///Assets/dead_end.png"));
         }
 
-        private void toMainWindow_button(object sender, RoutedEventArgs e)
+        private void PlayAgain_Click(object sender, RoutedEventArgs e)
         {
+<<<<<<< HEAD
             if (this.Frame != null)
             {
                 this.Frame.Navigate(typeof(MainWindow));
             }
+=======
+            Frame.Navigate(typeof(MainWindow));
+>>>>>>> cedd46ba71384b1466809f69f13ae252b5b950e7
         }
 
-        private void exit_button(object sender, RoutedEventArgs e)
+        private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Exit();
         }
