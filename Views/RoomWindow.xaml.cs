@@ -65,6 +65,11 @@ namespace EscapeRoom.Views
                 }
                 this.Close();
             }
+            else
+            {
+                new EndWindow().Activate();
+                this.Close();
+            }
         }
     }
 }
