@@ -13,6 +13,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="MangeTime\AnalogClock.xaml" />
     <None Remove="Views\EndWindow.xaml" />
     <None Remove="Views\WinnerWindow.xaml" />
   </ItemGroup>
@@ -57,6 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="Views\RoomWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Update="MangeTime\AnalogClock.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
