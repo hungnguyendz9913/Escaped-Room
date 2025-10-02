@@ -23,5 +23,20 @@
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 Margin="20"/>
-        </StackPanel>
+        <Button x:Name="toMainWindowButton"
+                Content="Back to main window"
+                Click="toMainWindow_button"
+                Width="220" Height="48"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+        </Button>
+        <Button x:Name="exitButton" 
+                Click="exit_button"
+                Content="Exit"
+                Width="220" Height="48"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center">
+
+        </Button>   
+    </StackPanel>
 </Window>
