@@ -101,7 +101,7 @@ namespace EscapeRoom.Views
         {
             if (ViewModel.CloseCommand.CanExecute(null))
             {
-                ViewModel.CloseCommand.Execute(null);
+                Application.Current.Exit();
             }
         }
 

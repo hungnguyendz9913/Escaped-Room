@@ -8,7 +8,6 @@ using System;
 
 namespace EscapeRoom.Views
 {
-    // Giữ tên RoomWindow nhưng kế thừa Page
     public sealed partial class RoomWindow : Page
     {
         private int _index;
@@ -18,7 +17,6 @@ namespace EscapeRoom.Views
             InitializeComponent();
         }
 
-        // Nhận index qua Navigate parameter
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -47,19 +45,16 @@ namespace EscapeRoom.Views
 
             if (!correct)
             {
-                // call EndWindow
                 Frame.Navigate(typeof(EndWindow));
             }
             else
             {
                 if (_index + 1 < PuzzleRepo.Puzzles.Count)
                 {
-                    // sang câu kế trong cùng Frame
                     Frame.Navigate(typeof(RoomWindow), _index + 1);
                 }
                 else
                 {
-                    // chuyển sang trang thắng; giữ tên WinnerWindow nếu bạn đang dùng Page cùng tên
                     Frame.Navigate(typeof(WinnerWindow));
                 }
             }
