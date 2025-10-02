@@ -1,33 +1,30 @@
-﻿using EscapeRoom.Services;
-using EscapeRoom.Views;
+﻿using EscapeRoom.Data;
 using Microsoft.UI.Xaml;
-using Microsoft.UI.Xaml.Media.Animation;
-using System.Threading.Tasks;
-using static EscapeRoom.Services.WindowPlacementServiceClass;
+using Microsoft.UI.Xaml.Controls;
 
 namespace EscapeRoom
 {
-    public sealed partial class MainWindow : Window
+    public sealed partial class MainWindow : Page
     {
-
         public MainWindow()
         {
-            this.InitializeComponent();
-            WindowResizeService.Resize(this, 1000, 800);
+            InitializeComponent();
+
         }
 
-        private void PlayButton_Click(object sender, RoutedEventArgs e)
+        private async void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            WindowPlacementService.Save(this);
-            var next = new RoomWindow(0);
-            WindowPlacementService.Restore(next);
-            next.Activate();
-            this.Close();
+            await PuzzleRepo.EnsureLoadedAsync();
+
+            MenuPanel.Visibility = Visibility.Collapsed;
+            RootFrame.Visibility = Visibility.Visible;
+
+            RootFrame.Navigate(typeof(EscapeRoom.Views.RoomWindow), 0); // RoomWindow là Page
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
+            Application.Current.Exit();
         }
     }
 }

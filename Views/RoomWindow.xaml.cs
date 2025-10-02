@@ -2,31 +2,33 @@
 using EscapeRoom.Services;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
-using Microsoft.UI.Xaml.Media.Animation;
 using Microsoft.UI.Xaml.Media.Imaging;
+using Microsoft.UI.Xaml.Navigation;
 using System;
-using System.Threading.Tasks;
-using static EscapeRoom.Services.WindowPlacementServiceClass;
-using static EscapeRoom.Services.WindowResizeService;
+
 namespace EscapeRoom.Views
 {
-    public sealed partial class RoomWindow : Window
+    // Giữ tên RoomWindow nhưng kế thừa Page
+    public sealed partial class RoomWindow : Page
     {
-        private readonly int _index;
+        private int _index;
 
-        public RoomWindow(int puzzleIndex)
+        public RoomWindow()
         {
-            this.InitializeComponent();
-            WindowResizeService.Resize(this, 1000, 800);
-            _index = puzzleIndex;
+            InitializeComponent();
+        }
+
+        // Nhận index qua Navigate parameter
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            _index = e.Parameter is int i ? i : 0;
             LoadPuzzle();
-            FadeIn();
         }
 
         private void LoadPuzzle()
         {
             var p = PuzzleRepo.Puzzles[_index];
-
             PuzzleImage.Source = new BitmapImage(new Uri($"ms-appx:///{p.ImagePath}"));
             PuzzleText.Text = p.Question;
             BtnA.Content = p.Options[0];
@@ -34,88 +36,33 @@ namespace EscapeRoom.Views
             BtnC.Content = p.Options[2];
         }
 
-        private void AnswerA_Click(object sender, RoutedEventArgs e) => SelectAnswer(0);
-        private void AnswerB_Click(object sender, RoutedEventArgs e) => SelectAnswer(1);
-        private void AnswerC_Click(object sender, RoutedEventArgs e) => SelectAnswer(2);
+        private void AnswerA_Click(object s, RoutedEventArgs e) => SelectAnswer("Abcdef");
+        private void AnswerB_Click(object s, RoutedEventArgs e) => SelectAnswer("Bcdefg");
+        private void AnswerC_Click(object s, RoutedEventArgs e) => SelectAnswer("Cdefgh");
 
-        private async void SelectAnswer(int choiceIndex)
+        private async void SelectAnswer(string choiceIndex)
         {
             var p = PuzzleRepo.Puzzles[_index];
-            bool correct = choiceIndex == p.CorrectIndex;
+            bool correct = Sha256Hasher.VerifyHex(choiceIndex, p.CorrectIndex);
 
-            var dialog = new ContentDialog
+            if (!correct)
             {
-                Title = correct ? "\uD83C\uDF89 Đúng rồi!" : "\u274C Sai rồi!",
-                CloseButtonText = "OK",
-                XamlRoot = this.Content.XamlRoot
-            };
-            await dialog.ShowAsync();
-
-            if (correct)
-            {
-                if (_index + 1 < PuzzleRepo.Puzzles.Count)
-                {
-                    await FadeOut();
-                    WindowPlacementService.Save(this);
-                    var next = new RoomWindow(_index + 1);
-                    WindowPlacementService.Restore(next);
-                    next.Activate();
-                }
-                else
-                {
-                    var winDialog = new ContentDialog
-                    {
-                        Title = "\uD83C\uDFC6 Thoát thành công!",
-                        CloseButtonText = "Thoát",
-                        XamlRoot = this.Content.XamlRoot
-                    };
-                    await winDialog.ShowAsync();
-                }
-                this.Close();
+                // call EndWindow
+                Frame.Navigate(typeof(EndWindow));
             }
             else
             {
-                await FadeOut();
-                WindowPlacementService.Save(this);
-                var next = new EndWindow();
-                WindowPlacementService.Restore(next);
-                next.Activate();
-                this.Close();
+                if (_index + 1 < PuzzleRepo.Puzzles.Count)
+                {
+                    // sang câu kế trong cùng Frame
+                    Frame.Navigate(typeof(RoomWindow), _index + 1);
+                }
+                else
+                {
+                    // chuyển sang trang thắng; giữ tên WinnerWindow nếu bạn đang dùng Page cùng tên
+                    Frame.Navigate(typeof(WinnerWindow));
+                }
             }
-        }
-        private async Task FadeOut()
-        {
-            var fade = new DoubleAnimation
-            {
-                To = 0,
-                Duration = new Duration(TimeSpan.FromMilliseconds(300))
-            };
-
-            var sb = new Storyboard();
-            sb.Children.Add(fade);
-            Storyboard.SetTarget(fade, RootLayout);
-            Storyboard.SetTargetProperty(fade, "Opacity");
-            sb.Begin();
-
-            await Task.Delay(300);
-        }
-
-        private async void FadeIn()
-        {
-            RootLayout.Opacity = 0;
-            await Task.Delay(100);
-
-            var fade = new DoubleAnimation
-            {
-                To = 1,
-                Duration = new Duration(TimeSpan.FromMilliseconds(400))
-            };
-
-            var sb = new Storyboard();
-            sb.Children.Add(fade);
-            Storyboard.SetTarget(fade, RootLayout);
-            Storyboard.SetTargetProperty(fade, "Opacity");
-            sb.Begin();
         }
     }
 }
