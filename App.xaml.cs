@@ -51,7 +51,7 @@ namespace EscapeRoom
                 Title = "Escape Room - Trò chơi giải đố",
                 Content = new MainWindow()
             };
-            WindowResizeService.Resize(_window, 800, 1000);
+            WindowResizeService.Resize(_window, 1000, 1000);
             _window.Activate();
         }
     }

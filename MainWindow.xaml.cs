@@ -19,7 +19,8 @@ namespace EscapeRoom
             MenuPanel.Visibility = Visibility.Collapsed;
             RootFrame.Visibility = Visibility.Visible;
 
-            RootFrame.Navigate(typeof(EscapeRoom.Views.RoomWindow), 0); // RoomWindow là Page
+            RootFrame.Navigate(typeof(EscapeRoom.Views.RoomWindow), 0);
+            RootGrid.Children.Remove(LandingGrid);
         }
 
         private void QuitButton_Click(object sender, RoutedEventArgs e)
