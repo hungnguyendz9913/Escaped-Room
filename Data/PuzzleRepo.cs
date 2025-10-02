@@ -1,32 +1,45 @@
-﻿using System.Collections.Generic;
+﻿using EscapeRoom.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Windows.Storage;
+using YamlDotNet.Serialization;
+using YamlDotNet.Serialization.NamingConventions;
 
 namespace EscapeRoom.Data
 {
     public static class PuzzleRepo
     {
-        public static List<Puzzle> Puzzles = new()
+        private static Task? _loadTask;
+        private static readonly SemaphoreSlim _gate = new(1, 1);
+        public static IReadOnlyList<Puzzle> Puzzles { get; private set; } = Array.Empty<Puzzle>();
+
+        public static Task EnsureLoadedAsync() => _loadTask ??= LoadCoreAsync();
+
+        private static async Task LoadCoreAsync()
         {
-            new Puzzle
+            await _gate.WaitAsync();
+            try
             {
-                Question = "Câu hỏi 1",
-                ImagePath = "Assets/room1.jpg",
-                Options = new [] { "Đáp án A", "Đáp án B: Chọn", "Đáp án C" },
-                CorrectIndex = 1
-            },
-            new Puzzle
-            {
-                Question = "Câu hỏi 2",
-                ImagePath = "Assets/room2.jpg",
-                Options = new [] { "Đáp án A: Chọn", "Đáp án B", "Đáp án C" },
-                CorrectIndex = 0
-            },
-            new Puzzle
-            {
-                Question = "Câu hỏi 3",
-                ImagePath = "Assets/room3.jpg",
-                Options = new [] { "Đáp án A", "Đáp án B", "Đáp án C: Chọn" },
-                CorrectIndex = 2
+                if (Puzzles.Count > 0) return;
+
+                var file = await StorageFile.GetFileFromApplicationUriAsync(
+                    new Uri("ms-appx:///Assets/PuzzleRepo.yaml"));
+                var text = await FileIO.ReadTextAsync(file);
+
+                var deserializer = new DeserializerBuilder()
+                    .WithNamingConvention(CamelCaseNamingConvention.Instance)
+                    .IgnoreUnmatchedProperties()
+                    .Build();
+
+                var list = deserializer.Deserialize<List<Puzzle>>(text) ?? new();
+                Puzzles = list.AsReadOnly();
             }
-        };
+            finally
+            {
+                _gate.Release();
+            }
+        }
     }
 }

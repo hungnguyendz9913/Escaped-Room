@@ -16,6 +16,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using EscapeRoom.Views;
+using EscapeRoom.Services;
+using EscapeRoom;
 
 // To learn more about WinUI, the WinUI project structure,
 // and more about our project templates, see: http://aka.ms/winui-project-info.
@@ -44,7 +46,12 @@ namespace EscapeRoom
         /// <param name="args">Details about the launch request and process.</param>
         protected override void OnLaunched(Microsoft.UI.Xaml.LaunchActivatedEventArgs args)
         {
-            _window = new MainWindow();
+            _window = new Window
+            {
+                Title = "Escape Room - Trò chơi giải đố",
+                Content = new MainWindow()
+            };
+            WindowResizeService.Resize(_window, 800, 1000);
             _window.Activate();
         }
     }
