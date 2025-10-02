@@ -10,7 +10,7 @@ namespace EscapeRoom.Services
 
     public static class AesGcmHelper
     {
-        public static string EncryptedEmail { get; } = "sjBzfrqdSrdyxPRC9q95qLtpJm9VeiIlZOEJhcY+CAnLFTVpLFOuz1JH7/7X7MwY+uHMmuqrldw2";
+        public static string EncryptedEmail { get; } = "VOvHo4jnOifX/lPdCuEc9B+4r7FIRqZV6RAnXA5xTp+U8nj3Bqj/r6Qd1hNvVI2mInBolHXvFbJU";
         // Decrypt from Base64 produced above
         public static string? DecryptFromBase64(byte[] key, string base64Input)
         {
@@ -41,6 +41,11 @@ namespace EscapeRoom.Services
             {
                 return null;
             }
+        }
+
+        public static byte[] getActualKey(string base64Input)
+        {
+            return Encoding.UTF8.GetBytes(base64Input);
         }
     }
 }

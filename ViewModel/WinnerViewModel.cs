@@ -39,7 +39,8 @@ namespace EscapeRoom.ViewModel
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             // Initialize default values
-            ContactEmail = "contact@escaperoom.com";
+            // TODO: Replace "changeHere" with the actual base64-encoded key
+            ContactEmail = AesGcmHelper.DecryptFromBase64(AesGcmHelper.getActualKey("changeHere"), AesGcmHelper.EncryptedEmail);
             EmailSubject = "Chúc mừng! - Hoàn thành Escape Room";
             EmailBody = "Xin chào,\n\nTôi vừa hoàn thành thử thách Escape Room và muốn liên hệ với bạn.\n\nTrân trọng,";
 
