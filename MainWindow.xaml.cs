@@ -9,7 +9,13 @@ namespace EscapeRoom
         public MainWindow()
         {
             InitializeComponent();
+            Loaded += MainWindow_Loaded;
+        }
 
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Start entrance animation
+            PageLoadAnimation.Begin();
         }
 
         private async void PlayButton_Click(object sender, RoutedEventArgs e)

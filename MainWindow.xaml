@@ -2,18 +2,21 @@
     x:Class="EscapeRoom.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Background="Transparent">
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Page.Resources>
-        <LinearGradientBrush x:Key="AppGradient" StartPoint="0,0" EndPoint="1,1">
-            <GradientStop Color="#0A000000" Offset="0"/>
-            <GradientStop Color="#12000000" Offset="1"/>
+        <!-- Gradient Background -->
+        <LinearGradientBrush x:Key="HeroGradient" StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#1A0078D4" Offset="0"/>
+            <GradientStop Color="#1A8E24AA" Offset="0.5"/>
+            <GradientStop Color="#1A0063B1" Offset="1"/>
         </LinearGradientBrush>
 
-        <Style x:Key="CardBorderStyle" TargetType="Border">
+        <!-- Hero Card Style -->
+        <Style x:Key="HeroCardStyle" TargetType="Border">
             <Setter Property="CornerRadius" Value="16"/>
-            <Setter Property="Padding" Value="28"/>
-            <Setter Property="Background" Value="{ThemeResource CardBackgroundFillColorDefaultBrush}"/>
+            <Setter Property="Padding" Value="32,28"/>
+            <Setter Property="Background" Value="{ThemeResource AcrylicBackgroundFillColorDefaultBrush}"/>
             <Setter Property="BorderBrush" Value="{ThemeResource CardStrokeColorDefaultBrush}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Shadow">
@@ -23,66 +26,190 @@
             </Setter>
         </Style>
 
-        <Style x:Key="PrimaryButton" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
-            <Setter Property="Width" Value="240"/>
+        <!-- Primary Button Style -->
+        <Style x:Key="HeroButtonStyle" TargetType="Button" BasedOn="{StaticResource AccentButtonStyle}">
+            <Setter Property="Width" Value="180"/>
             <Setter Property="Height" Value="52"/>
+            <Setter Property="FontSize" Value="17"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="CornerRadius" Value="26"/>
         </Style>
-        <Style x:Key="SecondaryButton" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
-            <Setter Property="Width" Value="240"/>
-            <Setter Property="Height" Value="44"/>
+
+        <!-- Secondary Button Style -->
+        <Style x:Key="OutlineButtonStyle" TargetType="Button" BasedOn="{StaticResource DefaultButtonStyle}">
+            <Setter Property="Width" Value="180"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="CornerRadius" Value="24"/>
         </Style>
+
+        <!-- Storyboards for Animations -->
+        <Storyboard x:Name="PageLoadAnimation">
+            <DoubleAnimation Storyboard.TargetName="HeroContent"
+                           Storyboard.TargetProperty="Opacity"
+                           From="0" To="1" Duration="0:0:0.8"
+                           EnableDependentAnimation="True">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="HeroContent"
+                           Storyboard.TargetProperty="(UIElement.RenderTransform).(TranslateTransform.Y)"
+                           From="40" To="0" Duration="0:0:0.8"
+                           EnableDependentAnimation="True">
+                <DoubleAnimation.EasingFunction>
+                    <CubicEase EasingMode="EaseOut"/>
+                </DoubleAnimation.EasingFunction>
+            </DoubleAnimation>
+        </Storyboard>
     </Page.Resources>
 
-    <Grid x:Name="RootGrid" Padding="24">
-        <!-- Nền gradient -->
-        <Rectangle Fill="{StaticResource AppGradient}"/>
-
-        <Grid x:Name="LandingGrid">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
-            </Grid.RowDefinitions>
-
-            <StackPanel Spacing="6">
-                <TextBlock Text="ESCAPE ROOM" FontSize="32" FontWeight="SemiBold"/>
-                <TextBlock Text="Một trò chơi puzzle nho nhỏ" Opacity="0.72"/>
-            </StackPanel>
-
-            <Border Grid.Row="1"
-                    Style="{StaticResource CardBorderStyle}"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Translation="0,0,16">
-                <StackPanel Spacing="16" HorizontalAlignment="Center">
-                    <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
-                        <SymbolIcon Symbol="Play" Width="32" Height="32"/>
-                        <TextBlock Text="Sẵn sàng vào trò chơi?" FontSize="20" FontWeight="SemiBold"/>
-                    </StackPanel>
-
-                    <TextBlock Text="Nhấn Play để bắt đầu, hoặc Quit để thoát."
-                               Opacity="0.72"
-                               HorizontalAlignment="Center"/>
-
-                    <!-- MenuPanel: giữ nguyên tên để code-behind truy cập -->
-                    <StackPanel x:Name="MenuPanel" Spacing="12" HorizontalAlignment="Center">
-                        <Button x:Name="PlayButton"
-                                Content="Play"
-                                Click="PlayButton_Click"
-                                Style="{StaticResource PrimaryButton}"/>
-                        <Button x:Name="QuitButton"
-                                Content="Quit"
-                                Click="QuitButton_Click"
-                                Style="{StaticResource SecondaryButton}"/>
-                    </StackPanel>
-                </StackPanel>
-            </Border>
-
-            <TextBlock Grid.Row="2"
-                       Text="Play để bắt đầu | Quit để thoát"
-                       Opacity="0.7"/>
+    <Grid x:Name="RootGrid">
+        <!-- Background with Gradient -->
+        <Grid>
+            <Rectangle Fill="{StaticResource HeroGradient}" Opacity="0.3"/>
         </Grid>
 
+        <!-- Landing Page -->
+        <Grid x:Name="LandingGrid">
+            <!-- Hero Section - Centered -->
+            <Grid x:Name="HeroContent" 
+                  Opacity="0"
+                  MaxWidth="1100"
+                  VerticalAlignment="Center"
+                  HorizontalAlignment="Center"
+                  Margin="32">
+                <Grid.RenderTransform>
+                    <TranslateTransform/>
+                </Grid.RenderTransform>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left Side - Hero Content -->
+                <StackPanel VerticalAlignment="Center" Spacing="24" MaxWidth="500">
+                    <!-- App Badge -->
+                    <Border Background="{ThemeResource AccentFillColorDefaultBrush}"
+                            CornerRadius="18"
+                            Padding="14,6"
+                            HorizontalAlignment="Left">
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <FontIcon Glyph="&#xE7C5;" FontSize="13"/>
+                            <TextBlock Text="Puzzle Adventure Game" 
+                                     FontSize="11" 
+                                     FontWeight="SemiBold"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- Main Title -->
+                    <StackPanel Spacing="12">
+                        <TextBlock Text="ESCAPE ROOM" 
+                                 FontSize="52" 
+                                 FontWeight="Bold"
+                                 TextWrapping="Wrap">
+                            <TextBlock.Foreground>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+                                    <GradientStop Color="{ThemeResource SystemAccentColor}" Offset="0"/>
+                                    <GradientStop Color="#8E24AA" Offset="1"/>
+                                </LinearGradientBrush>
+                            </TextBlock.Foreground>
+                        </TextBlock>
+                        <TextBlock Text="Thử thách trí tuệ của bạn" 
+                                 FontSize="22" 
+                                 Opacity="0.8"
+                                 TextWrapping="Wrap"/>
+                    </StackPanel>
+
+                    <!-- Description -->
+                    <TextBlock Text="Khám phá những câu đố thú vị, giải mã những bí ẩn và tìm đường thoát khỏi phòng. Hành trình đầy thách thức đang chờ đón bạn!"
+                             FontSize="15"
+                             Opacity="0.7"
+                             TextWrapping="Wrap"
+                             LineHeight="26"
+                             MaxWidth="450"/>
+
+                    <!-- Action Buttons -->
+                    <StackPanel x:Name="MenuPanel" Orientation="Horizontal" Spacing="14">
+                        <Button x:Name="PlayButton"
+                              Click="PlayButton_Click"
+                              Style="{StaticResource HeroButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon Glyph="&#xE768;" FontSize="18"/>
+                                <TextBlock Text="Bắt đầu chơi"/>
+                            </StackPanel>
+                        </Button>
+                        <Button x:Name="QuitButton"
+                              Click="QuitButton_Click"
+                              Style="{StaticResource OutlineButtonStyle}">
+                            <StackPanel Orientation="Horizontal" Spacing="10">
+                                <FontIcon Glyph="&#xE711;" FontSize="15"/>
+                                <TextBlock Text="Thoát"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- Right Side - Hero Card -->
+                <Border Grid.Column="1"
+                        Style="{StaticResource HeroCardStyle}"
+                        Width="315"
+                        Height="420"
+                        Translation="0,0,24"
+                        VerticalAlignment="Center"
+                        Margin="32,0,0,0">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- Hero Icon -->
+                        <Viewbox Width="120" Height="120" HorizontalAlignment="Center">
+                            <FontIcon Glyph="&#xE72C;" Foreground="{ThemeResource AccentFillColorDefaultBrush}"/>
+                        </Viewbox>
+
+                        <!-- Challenge Description -->
+                        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
+                            <!-- Challenge Badge -->
+                            <Border Background="{ThemeResource AccentFillColorSecondaryBrush}"
+                                    CornerRadius="12"
+                                    Padding="16,10"
+                                    HorizontalAlignment="Center">
+                                <StackPanel Orientation="Horizontal" Spacing="10">
+                                    <FontIcon Glyph="&#xE823;" FontSize="20" 
+                                            Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                    <TextBlock Text="3 Câu hỏi" 
+                                             FontSize="16" 
+                                             FontWeight="SemiBold"
+                                             Foreground="{ThemeResource AccentTextFillColorPrimaryBrush}"/>
+                                </StackPanel>
+                            </Border>
+
+                            <!-- Main Description -->
+                            <TextBlock Text="Vượt qua 3 câu hỏi để tìm thấy email và tham gia nhóm với mình" 
+                                     FontSize="18"
+                                     FontWeight="SemiBold"
+                                     TextAlignment="Center"
+                                     TextWrapping="Wrap"
+                                     LineHeight="28"
+                                     Margin="12,0"/>
+
+                            <!-- Hint Icon -->
+                            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center" Opacity="0.7">
+                                <FontIcon Glyph="&#xE946;" FontSize="16"/>
+                                <TextBlock Text="Sử dụng logic và suy luận" 
+                                         FontSize="14"
+                                         FontStyle="Italic"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+            </Grid>
+        </Grid>
+
+        <!-- Game Frame -->
         <Frame x:Name="RootFrame"
                Background="Transparent"
                Visibility="Collapsed"/>

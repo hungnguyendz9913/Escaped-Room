@@ -17,7 +17,7 @@ namespace EscapeRoom.Services
         /// <param name="message">Dialog message</param>
         /// <param name="xamlRoot">XamlRoot for the dialog</param>
         /// <returns>Task representing the async operation</returns>
-        public async Task ShowErrorDialogAsync(string title, string message, XamlRoot xamlRoot = null)
+        public async Task ShowErrorDialogAsync(string title, string message, XamlRoot? xamlRoot = null)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace EscapeRoom.Services
         /// <param name="message">Dialog message</param>
         /// <param name="xamlRoot">XamlRoot for the dialog</param>
         /// <returns>Task representing the async operation</returns>
-        public async Task ShowSuccessDialogAsync(string title, string message, XamlRoot xamlRoot = null)
+        public async Task ShowSuccessDialogAsync(string title, string message, XamlRoot? xamlRoot = null)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace EscapeRoom.Services
         /// <param name="message">Dialog message</param>
         /// <param name="xamlRoot">XamlRoot for the dialog</param>
         /// <returns>True if user clicked Yes/Primary, false otherwise</returns>
-        public async Task<bool> ShowConfirmationDialogAsync(string title, string message, XamlRoot xamlRoot = null)
+        public async Task<bool> ShowConfirmationDialogAsync(string title, string message, XamlRoot? xamlRoot = null)
         {
             try
             {
@@ -110,7 +110,7 @@ namespace EscapeRoom.Services
             string primaryButtonText,
             string secondaryButtonText = null,
             string closeButtonText = null,
-            XamlRoot xamlRoot = null)
+            XamlRoot? xamlRoot = null)
         {
             try
             {
@@ -142,10 +142,10 @@ namespace EscapeRoom.Services
     /// </summary>
     public interface IDialogService
     {
-        Task ShowErrorDialogAsync(string title, string message, XamlRoot xamlRoot = null);
-        Task ShowSuccessDialogAsync(string title, string message, XamlRoot xamlRoot = null);
-        Task<bool> ShowConfirmationDialogAsync(string title, string message, XamlRoot xamlRoot = null);
+        Task ShowErrorDialogAsync(string title, string message, XamlRoot? xamlRoot = null);
+        Task ShowSuccessDialogAsync(string title, string message, XamlRoot? xamlRoot = null);
+        Task<bool> ShowConfirmationDialogAsync(string title, string message, XamlRoot? xamlRoot = null);
         Task<ContentDialogResult> ShowCustomDialogAsync(string title, string message, string primaryButtonText, 
-            string secondaryButtonText = null, string closeButtonText = null, XamlRoot xamlRoot = null);
+            string secondaryButtonText = null, string closeButtonText = null, XamlRoot? xamlRoot = null);
     }
 }

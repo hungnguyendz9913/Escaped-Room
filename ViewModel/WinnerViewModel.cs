@@ -39,8 +39,10 @@ namespace EscapeRoom.ViewModel
             _dialogService = dialogService ?? throw new ArgumentNullException(nameof(dialogService));
 
             // Initialize default values
-            // TODO: Replace "changeHere" with the actual base64-encoded key
-            ContactEmail = AesGcmHelper.DecryptFromBase64(AesGcmHelper.getActualKey("5902b1ea012044722bf92953"), AesGcmHelper.EncryptedEmail);
+            ContactEmail = AesGcmHelper.DecryptFromBase64(
+                AesGcmHelper.getActualKey("5902b1ea012044722bf92953"),
+                AesGcmHelper.EncryptedEmail
+            ) ?? string.Empty;
             EmailSubject = "Chúc mừng! - Hoàn thành Escape Room";
             EmailBody = "Xin chào,\n\nTôi vừa hoàn thành thử thách Escape Room và muốn liên hệ với bạn.\n\nTrân trọng,";
 
@@ -156,7 +158,7 @@ namespace EscapeRoom.ViewModel
                     await _dialogService.ShowErrorDialogAsync(
                         "Lỗi Copy", 
                         "Không thể copy email vào clipboard. Vui lòng thử lại.",
-                        _xamlRoot);
+                        _xamlRoot!); // Use null-forgiving operator
                 }
             }
             catch (Exception ex)
@@ -164,7 +166,7 @@ namespace EscapeRoom.ViewModel
                 await _dialogService.ShowErrorDialogAsync(
                     "Lỗi không mong muốn", 
                     $"Đã xảy ra lỗi khi copy email: {ex.Message}",
-                    _xamlRoot);
+                    _xamlRoot!); // Use null-forgiving operator
             }
         }
 
@@ -182,7 +184,7 @@ namespace EscapeRoom.ViewModel
                     await _dialogService.ShowErrorDialogAsync(
                         "Lỗi mở Gmail", 
                         "Không thể mở Gmail. Vui lòng kiểm tra trình duyệt của bạn.",
-                        _xamlRoot);
+                        _xamlRoot!); // Use null-forgiving operator
                 }
             }
             catch (Exception ex)
@@ -190,7 +192,7 @@ namespace EscapeRoom.ViewModel
                 await _dialogService.ShowErrorDialogAsync(
                     "Lỗi Gmail", 
                     $"Đã xảy ra lỗi khi mở Gmail: {ex.Message}",
-                    _xamlRoot);
+                    _xamlRoot!); // Use null-forgiving operator
             }
         }
 
@@ -208,7 +210,7 @@ namespace EscapeRoom.ViewModel
                     await _dialogService.ShowErrorDialogAsync(
                         "Lỗi mở Outlook", 
                         "Không thể mở Outlook. Vui lòng kiểm tra trình duyệt của bạn.",
-                        _xamlRoot);
+                        _xamlRoot!); // Use null-forgiving operator
                 }
             }
             catch (Exception ex)
@@ -216,7 +218,7 @@ namespace EscapeRoom.ViewModel
                 await _dialogService.ShowErrorDialogAsync(
                     "Lỗi Outlook", 
                     $"Đã xảy ra lỗi khi mở Outlook: {ex.Message}",
-                    _xamlRoot);
+                    _xamlRoot!); // Use null-forgiving operator
             }
         }
 

@@ -32,7 +32,7 @@
         </Grid.Background>
 
         <Border 
-                Width="540"
+                Width="640"
                 Height="700"
                 CornerRadius="{StaticResource OverlayCornerRadius}"
                 Padding="48,40,48,48"
