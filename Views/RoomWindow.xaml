@@ -1,25 +1,41 @@
-<Window
+<Page
     x:Class="EscapeRoom.Views.RoomWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    Title="Room">
+    >
 
     <StackPanel x:Name="RootLayout" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="12">
         <Image x:Name="PuzzleImage"
-               Width="300" Height="200"
+               Width="400" Height="250"
                Stretch="Uniform"
                HorizontalAlignment="Center"
                Margin="0,0,0,20"/>
         
         <TextBlock x:Name="PuzzleText"
                    Text="Puzzle Question"
+                   TextWrapping="WrapWholeWords"
                    FontSize="20"
                    FontWeight="SemiBold"
                    TextAlignment="Center"
                    Margin="0,0,0,20"/>
 
-        <Button x:Name="BtnA" Click="AnswerA_Click" Width="300" Height="40"/>
-        <Button x:Name="BtnB" Click="AnswerB_Click" Width="300" Height="40"/>
-        <Button x:Name="BtnC" Click="AnswerC_Click" Width="300" Height="40"/>
+        <Button x:Name="BtnA" Width="500" MinHeight="40"
+        HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Padding="16,10"
+        Click="AnswerA_Click">
+            <TextBlock x:Name="BtnAText" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+        </Button>
+
+        <Button x:Name="BtnB" Width="500" MinHeight="40"
+        HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Padding="16,10"
+        Click="AnswerB_Click">
+            <TextBlock x:Name="BtnBText" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+        </Button>
+
+        <Button x:Name="BtnC" Width="500" MinHeight="40"
+        HorizontalAlignment="Center" HorizontalContentAlignment="Stretch" Padding="16,10"
+        Click="AnswerC_Click">
+            <TextBlock x:Name="BtnCText" TextWrapping="WrapWholeWords" TextAlignment="Center"/>
+        </Button>
+
     </StackPanel>
-</Window>
+</Page>

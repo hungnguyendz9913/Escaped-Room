@@ -1,0 +1,23 @@
+- question: "Toán tử nào là “null-coalescing” trong C#?"
+  imagePath: "Assets/nullcoalescing.png"
+  options:
+    - "A. ?:"
+    - "B. ??"
+    - "C. is"
+  correctIndex: "8d4ec6f1197570a3ff6c33f7902e306257523c65a202cb7cf341aba25902b1ea"
+
+- question: "Với ứng dụng WinUI Desktop mới build xong, bạn có thể chạy file .exe trực tiếp chưa?"
+  imagePath: "Assets/projectstructuresandartifact.png"
+  options:
+    - "A. Có, chạy được ngay"
+    - "B. Chưa, phải đóng gói (package) trước (MSIX)"
+    - "C. Không, phải triển khai (deploy) trước (MSIX)"
+  correctIndex: "0ba13ce5999072f7c654138e631d0b26d97cdd3ee34826fc64c2e4e201204472"
+
+- question: "Chu kỳ hỗ trợ của .NET 8 là bao lâu?"
+  imagePath: "Assets/dotnet8.png"
+  options:
+    - "A. 3 năm"
+    - "B. 1 năm"
+    - "C. 2 năm"
+  correctIndex: "6f6e60a68f732fad240e166685b809d1e6900bb759647d273051f24f2bf92953"
