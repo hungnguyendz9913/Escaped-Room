@@ -8,19 +8,35 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
-        <TextBlock Text="Oh no! You've encountered a dead end!"
-                   FontSize="24"
-                   FontWeight="Bold"
+    <Grid Background="Black">
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="20">
+
+            <TextBlock Text="❌ GAME OVER ❌"
+                       FontSize="30"
+                       FontWeight="Bold"
+                       Foreground="Red"
+                       HorizontalAlignment="Center"
+                       TextAlignment="Center"/>
+
+            <Image x:Name="DeadEndImage"
+                   Width="200"
+                   Height="200"
                    HorizontalAlignment="Center"
-                   VerticalAlignment="Center"
-                   TextAlignment="Center"
-                   Margin="20"/>
-        <Image  x:Name="DeadEndImage"
-                Width="200"
-                Height="200"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                Margin="20"/>
+                   VerticalAlignment="Center"/>
+
+            <Button Content="Chơi lại"
+                    Width="120"
+                    Height="40"
+                    Background="Green"
+                    Foreground="White"
+                    Click="PlayAgain_Click"/>
+
+            <Button Content="Thoát"
+                    Width="120"
+                    Height="40"
+                    Background="Gray"
+                    Foreground="White"
+                    Click="Exit_Click"/>
         </StackPanel>
+    </Grid>
 </Page>
