@@ -1,6 +1,9 @@
-﻿using Microsoft.UI.Xaml;
+﻿using EscapeRoom.Services;
 using EscapeRoom.Views;
-using EscapeRoom.Services;
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media.Animation;
+using System.Threading.Tasks;
+using static EscapeRoom.Services.WindowPlacementServiceClass;
 
 namespace EscapeRoom
 {
@@ -15,7 +18,10 @@ namespace EscapeRoom
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            new RoomWindow(0).Activate();
+            WindowPlacementService.Save(this);
+            var next = new RoomWindow(0);
+            WindowPlacementService.Restore(next);
+            next.Activate();
             this.Close();
         }
 
